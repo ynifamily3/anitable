@@ -2,6 +2,8 @@
 
 [12번 주제 PWA APP 제작](https://github.com/2020-NAVER-CAMPUS-HACKDAY/common/issues/12)
 
+## 메신저(밴드): https://band.us/n/a2ad37w0GaWdZ
+
 ### 참가자
 
 agrajak, kuk941025, myungwoo-Y, ynifamily3
