@@ -1,6 +1,6 @@
 # pwa_f2
 
-12번 주제 PWA APP 제작
+[12번 주제 PWA APP 제작](https://github.com/2020-NAVER-CAMPUS-HACKDAY/common/issues/12)
 
 ### 참가자
 
