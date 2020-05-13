@@ -2,26 +2,30 @@
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import {
+  StaleWhileRevalidate,
   NetworkFirst,
   CacheFirst,
-  StaleWhileRevalidate,
 } from "workbox-strategies";
 
 /* eslint-disable-next-line no-restricted-globals */
 precacheAndRoute(self.__WB_MANIFEST);
 
 // app-shell
-registerRoute("/", new NetworkFirst());
-registerRoute("/manifest.json", new NetworkFirst());
-registerRoute("/custom-sw.js", new NetworkFirst());
+registerRoute("/", new StaleWhileRevalidate());
+registerRoute("/manifest.json", new StaleWhileRevalidate());
+registerRoute("/custom-sw.js", new StaleWhileRevalidate());
 
 // 정적 이미지 파일 등
 registerRoute(
   ({ url }) => url.pathname.startsWith("/icons/"),
-  new StaleWhileRevalidate()
+  new CacheFirst()
 );
 registerRoute(
   /^http(s)?:\/\/fonts\.googleapis\.com.*$/,
+  new StaleWhileRevalidate()
+);
+registerRoute(
+  /^http(s)?:\/\/fonts\.gstatic\.com.*$/,
   new StaleWhileRevalidate()
 );
 registerRoute(
@@ -29,5 +33,5 @@ registerRoute(
   new StaleWhileRevalidate()
 );
 
-// api
+// api 캐시
 registerRoute("https://api.miel.dev/timetable/list/now", new NetworkFirst());
