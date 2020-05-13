@@ -23,7 +23,9 @@ export interface AniTimetableError {
 
 export async function getAniTimetableInfo(): Promise<Response> {
   try {
-    return await fetch(`https://api.ohli.moe/timetable/list/now`);
+    return await fetch(`https://api.miel.dev/timetable/list/now`, {
+      mode: "cors",
+    });
   } catch (error) {
     const reason: AniTimetableError = { errorMessage: error };
     return Promise.reject(reason);

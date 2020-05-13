@@ -10,5 +10,5 @@ console.log("헬로우 프롬 커스텀서비스워커.js");
 
 // app-shell
 registerRoute("/", new NetworkFirst());
-registerRoute("https://api.ohli.moe/timetable/list/now", new NetworkFirst());
+registerRoute("https://api.miel.dev/timetable/list/now", new NetworkFirst());
 registerRoute(/^http(s)?:\/\/pbs.twimg.com\/media\/.*$/, new NetworkFirst());
