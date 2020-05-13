@@ -1,7 +1,6 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   AniTimetableElem as AniTimetableElemType,
-  AniTimetableError as AniTimetableErrorType,
   getAniTimetableInfo,
 } from "../../api/anitableApi";
 
