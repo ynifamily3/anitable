@@ -4,6 +4,7 @@
 - 오프라인 지원, 푸쉬 알림 지원 (Android, Web)
 
 ## 실행 방법
+
 ```sh
 $ yarn
 $ yarn build
@@ -11,8 +12,17 @@ $ yarn prod-run
 ```
 [http://localhost:3000](http://localhost:3000) 접속하여 확인
 
+또는
+```sh
+$ docker-compose up -d
+```
+[http://localhost:10765](http://localhost:10765) 접속하여 확인
+
+
 ## API정보
 - 문서 : https://ohli.moe/api
 - 실제 사용 API : https://api.miel.dev/ ```(cors 문제를 해결하기 위해 프록시 사용)```
   - 예시 : https://api.miel.dev/timetable/list/now
   
+## Live Demo
+[https://anime.miel.dev](https://anime.miel.dev) 접속하여 확인 가능
