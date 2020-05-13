@@ -10,10 +10,6 @@ module.exports = function override(config, env) {
     ...defaultInjectConfig,
     swSrc: path.join(__dirname, "src", "custom-sw.js"),
   };
-  // if (env === "production") {
-  //   // load workbox from your own server in production
-  //   workboxConfig.importWorkboxFrom = "local";
-  // }
   config = rewireWorkboxInject(workboxConfig)(config, env);
   return config;
 };
