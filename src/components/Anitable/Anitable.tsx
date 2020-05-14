@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/rootReducer";
@@ -11,28 +7,14 @@ import { fetchAnitable } from "../../features/anitable/anitableSlice";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CloudOffIcon from "@material-ui/icons/CloudOff";
 import { Button } from "@material-ui/core";
-import Grow from "@material-ui/core/Grow";
+import AniElem from "./AniElem";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-    },
-    details: {
-      display: "flex",
-      flexDirection: "column",
-    },
-    content: {
-      flex: "1 0 auto",
-    },
-    cover: {
-      width: 128,
-    },
-  })
-);
+interface Props {
+  youbi: number;
+}
 
-function Anitable() {
-  const classes = useStyles();
+function Anitable(props: Props) {
+  const { youbi } = props;
   const ani = useSelector((state: RootState) => state.anitable);
   const dispatch = useDispatch();
 
@@ -63,27 +45,8 @@ function Anitable() {
         </Box>
       )}
       {ani.loaded === "fulfilled" &&
-        ani.animations[new Date().getDay()].map((x, order) => {
-          return (
-            <Grow in={true} key={x.i} timeout={500 + order * 500}>
-              <Box m="1rem">
-                <Card className={classes.root}>
-                  <CardMedia
-                    className={classes.cover}
-                    image={x.img}
-                    title={x.s}
-                  />
-                  <div className={classes.details}>
-                    <CardContent className={classes.content}>
-                      <Typography component="h5" variant="h5">
-                        {x.s}
-                      </Typography>
-                    </CardContent>
-                  </div>
-                </Card>
-              </Box>
-            </Grow>
-          );
+        ani.animations[youbi].map((x, order) => {
+          return <AniElem x={x} key={x.i} />;
         })}
     </React.Fragment>
   );
