@@ -48,8 +48,10 @@ export function register(config?: Config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
-          appTrigger();
-          // console.log("This web app is being served cache-first by a service " + "worker. To learn more, visit https://bit.ly/CRA-PWA");
+          console.log(
+            "This web app is being served cache-first by a service " +
+              "worker. To learn more, visit https://bit.ly/CRA-PWA"
+          );
         });
       } else {
         // Is not localhost. Just register service worker
@@ -70,6 +72,7 @@ function registerValidSW(swUrl: string, config?: Config) {
         }
         installingWorker.onstatechange = () => {
           if (installingWorker.state === "installed") {
+            appTrigger(); // 이미 설치 되었으면 앱을 트리거
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
               // but the previous service worker will still serve the older
@@ -81,7 +84,6 @@ function registerValidSW(swUrl: string, config?: Config) {
 
               // Execute callback
               if (config && config.onUpdate) {
-                appTrigger();
                 config.onUpdate(registration);
               }
             } else {
@@ -92,7 +94,6 @@ function registerValidSW(swUrl: string, config?: Config) {
 
               // Execute callback
               if (config && config.onSuccess) {
-                appTrigger();
                 config.onSuccess(registration);
               }
             }
