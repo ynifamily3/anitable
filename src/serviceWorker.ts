@@ -63,6 +63,7 @@ export function register(config?: Config) {
 }
 
 function registerValidSW(swUrl: string, config?: Config) {
+  console.log("!! registerValidSW");
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
@@ -71,6 +72,7 @@ function registerValidSW(swUrl: string, config?: Config) {
         if (installingWorker == null) {
           return;
         }
+        console.log("**", registration);
         installingWorker.onstatechange = () => {
           console.log("state Changing...", installingWorker.state);
           if (installingWorker.state === "installed") {
