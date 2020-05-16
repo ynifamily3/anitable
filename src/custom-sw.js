@@ -15,8 +15,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 skipWaiting();
 clientsClaim();
 
-// self.addEventListener("install", (event) => {});
-
 // app-shell
 registerRoute("/", new StaleWhileRevalidate());
 registerRoute("/manifest.json", new StaleWhileRevalidate());

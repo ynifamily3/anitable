@@ -72,7 +72,7 @@ function registerValidSW(swUrl: string, config?: Config) {
         if (installingWorker == null) {
           return;
         }
-        console.log("**", registration);
+        console.log("**=>", installingWorker.state);
         installingWorker.onstatechange = () => {
           console.log("state Changing...", installingWorker.state);
           if (installingWorker.state === "installed") {
