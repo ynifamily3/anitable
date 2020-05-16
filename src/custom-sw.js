@@ -15,10 +15,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 skipWaiting();
 clientsClaim();
 
-self.addEventListener("fetch", (event) => {
-  console.log("&&업데이트 됨");
-});
-
 // app-shell
 registerRoute("/", new StaleWhileRevalidate());
 registerRoute("/manifest.json", new StaleWhileRevalidate());

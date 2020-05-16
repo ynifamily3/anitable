@@ -64,6 +64,10 @@ export function register(config?: Config) {
 
 function registerValidSW(swUrl: string, config?: Config) {
   console.log("!! registerValidSW");
+  navigator.serviceWorker.ready.then(() => {
+    appTrigger();
+    console.log("이미 설치된 서비스 워커 존재");
+  });
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
