@@ -63,7 +63,6 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
-      appTrigger();
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -82,6 +81,7 @@ function registerValidSW(swUrl: string, config?: Config) {
 
               // Execute callback
               if (config && config.onUpdate) {
+                appTrigger();
                 config.onUpdate(registration);
               }
             } else {
@@ -92,6 +92,7 @@ function registerValidSW(swUrl: string, config?: Config) {
 
               // Execute callback
               if (config && config.onSuccess) {
+                appTrigger();
                 config.onSuccess(registration);
               }
             }
