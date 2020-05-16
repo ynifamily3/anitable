@@ -20,6 +20,7 @@ const appTrigger = () => {
 
 // 서비스워커가 없으면 그냥 앱을 실행
 if (!("serviceWorker" in navigator) || process.env.NODE_ENV !== "production") {
+  console.log("서비스워커가 지원되지 않습니다.");
   appTrigger();
 }
 

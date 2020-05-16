@@ -80,6 +80,7 @@ function registerValidSW(swUrl: string, config?: Config) {
         installingWorker.onstatechange = () => {
           console.log("state Changing...", installingWorker.state);
           if (installingWorker.state === "installed") {
+            console.log("설치되었습니다.");
             appTrigger(); // 이미 설치 되었으면 앱을 트리거
             if (navigator.serviceWorker.controller) {
               // At this point, the updated precached content has been fetched,
