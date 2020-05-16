@@ -1,14 +1,21 @@
+/* eslint-disable no-restricted-globals */
 // We need this in Webpack plugin (refer to swSrc option): https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin#full_injectmanifest_config
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
+import { skipWaiting, clientsClaim } from "workbox-core";
+
 import {
   StaleWhileRevalidate,
   NetworkFirst,
   CacheFirst,
 } from "workbox-strategies";
 
-/* eslint-disable-next-line no-restricted-globals */
 precacheAndRoute(self.__WB_MANIFEST);
+
+skipWaiting();
+clientsClaim();
+
+// self.addEventListener("install", (event) => {});
 
 // app-shell
 registerRoute("/", new StaleWhileRevalidate());

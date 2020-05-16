@@ -7,12 +7,22 @@ import { CssBaseline } from "@material-ui/core";
 import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(
-  <ReduxProvider store={store}>
-    <CssBaseline />
-    <App />
-  </ReduxProvider>,
-  document.getElementById("root")
-);
+const appTrigger = () => {
+  ReactDOM.render(
+    <ReduxProvider store={store}>
+      <CssBaseline />
+      <App />
+    </ReduxProvider>,
+    document.getElementById("root")
+  );
+};
 
+// 서비스워커가 없으면 그냥 앱을 실행
+if (!("serviceWorker" in navigator) || process.env.NODE_ENV !== "production") {
+  appTrigger();
+}
+
+// 서비스워커가 있다면 서비스워커가 준비된 뒤에 앱이 실행될 수 있도록 설정
 serviceWorker.register();
+
+export default appTrigger;

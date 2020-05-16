@@ -6,7 +6,7 @@ import { RootState } from "../../app/rootReducer";
 import { fetchAnitable } from "../../features/anitable/anitableSlice";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import CloudOffIcon from "@material-ui/icons/CloudOff";
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import AniElem from "./AniElem";
 
 interface Props {
@@ -46,7 +46,7 @@ function Anitable(props: Props) {
       )}
       {ani.loaded === "fulfilled" &&
         ani.animations[youbi].map((x, order) => {
-          return <AniElem x={x} key={x.i} />;
+          return <AniElem x={x} key={x.i} isComplete={youbi === 7} />;
         })}
     </React.Fragment>
   );

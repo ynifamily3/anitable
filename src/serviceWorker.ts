@@ -1,3 +1,4 @@
+import appTrigger from "./index";
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
@@ -47,10 +48,8 @@ export function register(config?: Config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
-          console.log(
-            "This web app is being served cache-first by a service " +
-              "worker. To learn more, visit https://bit.ly/CRA-PWA"
-          );
+          appTrigger();
+          // console.log("This web app is being served cache-first by a service " + "worker. To learn more, visit https://bit.ly/CRA-PWA");
         });
       } else {
         // Is not localhost. Just register service worker
@@ -64,6 +63,7 @@ function registerValidSW(swUrl: string, config?: Config) {
   navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
+      appTrigger();
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -101,6 +101,7 @@ function registerValidSW(swUrl: string, config?: Config) {
     })
     .catch((error) => {
       console.error("Error during service worker registration:", error);
+      appTrigger(); // 에러 발생시에도 그냥 트리거 (앱은 실행될 수 있도록)
     });
 }
 
