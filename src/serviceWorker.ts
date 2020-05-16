@@ -48,6 +48,7 @@ export function register(config?: Config) {
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
         navigator.serviceWorker.ready.then(() => {
+          appTrigger();
           console.log(
             "This web app is being served cache-first by a service " +
               "worker. To learn more, visit https://bit.ly/CRA-PWA"
@@ -71,6 +72,7 @@ function registerValidSW(swUrl: string, config?: Config) {
           return;
         }
         installingWorker.onstatechange = () => {
+          console.log("state Changing...", installingWorker.state);
           if (installingWorker.state === "installed") {
             appTrigger(); // 이미 설치 되었으면 앱을 트리거
             if (navigator.serviceWorker.controller) {

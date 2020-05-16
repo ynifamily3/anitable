@@ -8,6 +8,7 @@ import "typeface-roboto";
 import * as serviceWorker from "./serviceWorker";
 
 const appTrigger = () => {
+  console.log("Triggering Apps...");
   ReactDOM.render(
     <ReduxProvider store={store}>
       <CssBaseline />
