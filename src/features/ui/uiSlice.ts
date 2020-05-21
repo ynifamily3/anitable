@@ -1,24 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UIState {
-  counter: number;
+  notiGranted: "default" | "granted" | "denied";
 }
 
 const initialState: UIState = {
-  counter: 0,
+  notiGranted: "default",
 };
 
 const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    setCounter(state, action: PayloadAction<number>): void {
-      state.counter = action.payload;
+    setNotify(state, action): void {
+      state.notiGranted = action.payload;
     },
   },
 });
 
-export const { setCounter } = uiSlice.actions;
+export const { setNotify } = uiSlice.actions;
 
 export default uiSlice.reducer;
 

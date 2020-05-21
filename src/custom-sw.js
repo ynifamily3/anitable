@@ -3,6 +3,7 @@
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { skipWaiting, clientsClaim } from "workbox-core";
+import localforage from "localforage";
 
 import {
   StaleWhileRevalidate,
@@ -15,19 +16,36 @@ precacheAndRoute(self.__WB_MANIFEST);
 skipWaiting();
 clientsClaim();
 
-async function doSomeStuff() {
+async function aniAlarm() {
+  console.log("aniAlarm 스타트.");
   return new Promise(async (resolve, reject) => {
-    console.log("두 썸 스텁");
-    resolve({
-      emoji: "=ㅅ=",
-    });
+    setInterval(async () => {
+      self.registration.showNotification("애니 알림!" + Math.random());
+    }, 10000);
   });
+  // return new Promise(async (resolve, reject) => {
+  //   setInterval(async () => {
+  //     console.log("인터벌 작업..");
+  //     try {
+  //       const test = await localforage.getItem("testment");
+  //       if (test === null) {
+  //         await localforage.setItem("testment", []);
+  //       } else {
+  //         await localforage.setItem("testment", [...test, Math.random()]);
+  //         console.log(test);
+  //       }
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //     self.registration.showNotification("안농" + Math.random());
+  //   }, 1000 * 60 * 10); // 10분마다 검사
+  // });
 }
 
 // 싱크
 self.addEventListener("sync", function (event) {
-  if (event.tag === "myFirstSync") {
-    event.waitUntil(doSomeStuff());
+  if (event.tag === "aniAlarmSync") {
+    event.waitUntil(aniAlarm());
   }
 });
 

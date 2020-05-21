@@ -15,8 +15,7 @@ const afterServiceWorkerReadyHandler = () => {
     (swRegistration: ServiceWorkerRegistration) => {
       console.log("서비스워커가 준비되었습니다.", swRegistration);
       appTrigger();
-      const syreg = swRegistration.sync.register("myFirstSync");
-      console.info("**", syreg);
+      const syreg = swRegistration.sync.register("aniAlarmSync");
       return syreg;
     }
   );

@@ -15,7 +15,10 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/rootReducer";
-import { setAniAlarm } from "../../features/anitable/anialarmSlice";
+import {
+  setAniAlarm,
+  AniAlarmElemState,
+} from "../../features/anitable/anialarmSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -68,22 +71,65 @@ interface Props {
   isComplete?: boolean; // 완결난 애니 (기타 탭) 인 경우 true
 }
 
+interface Props2 {
+  ani: AniAlarmElemState;
+  isOn: boolean;
+}
+
 export default function AniElem({ x, isComplete }: Props) {
   const classes = useStyles();
   const [imgLoaded, setImgLoaded] = useState(false);
   const dispatch = useDispatch();
   const aniAlarm = useSelector((state: RootState) => state.anialarm);
+  const notify = useSelector((state: RootState) => state.ui);
+
+  const RenderNotifi = (props: Props2) => {
+    return props.isOn ? (
+      <Tooltip title="푸쉬 알림 끄기" aria-label="pushNotification">
+        <IconButton
+          aria-label="turn off Notification"
+          disabled={notify.notiGranted !== "granted"}
+          onClick={handleAlarmOffClick(props.ani)}
+        >
+          <NotificationsActiveIcon />
+        </IconButton>
+      </Tooltip>
+    ) : (
+      <Tooltip title="푸쉬 알림 켜기" aria-label="pushNotification">
+        <IconButton
+          aria-label="turn on Notification"
+          disabled={notify.notiGranted !== "granted"}
+          onClick={handleAlarmClick(props.ani)}
+        >
+          <NotificationsIcon />
+        </IconButton>
+      </Tooltip>
+    );
+  };
 
   const handleImageLoad = (
     event: React.SyntheticEvent<HTMLImageElement, Event>
   ) => {
     setImgLoaded(true);
   };
-  const handleAlarmClick = (payload: string) => (
+  const handleAlarmClick = (payload: AniAlarmElemState) => (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log(payload);
     dispatch(setAniAlarm([...aniAlarm.alarms, payload]));
+  };
+  const handleAlarmOffClick = (payload: AniAlarmElemState) => (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    // const copyState = [...aniAlarm.alarms];
+    // copyState.splice(aniAlarm.alarms.indexOf(payload), 1);
+    // dispatch(setAniAlarm(copyState));
+    dispatch(
+      setAniAlarm(
+        aniAlarm.alarms.filter((x) => {
+          return x.aniNumber !== payload.aniNumber;
+        })
+      )
+    );
   };
   return (
     <Box m="1rem" className={classes.box}>
@@ -111,16 +157,30 @@ export default function AniElem({ x, isComplete }: Props) {
               </Typography>
             </div>
             <div className={classes.right}>
-              {!isComplete && aniAlarm.loaded === "fulfilled" && (
-                <Tooltip title="푸쉬 알림 받기" aria-label="pushNotification">
-                  <IconButton
-                    aria-label="turn on Notification"
-                    onClick={handleAlarmClick(x.i + "")}
-                  >
-                    <NotificationsIcon />
-                    {/* <NotificationsActiveIcon /> */}
-                  </IconButton>
-                </Tooltip>
+              {!isComplete && aniAlarm.loaded === "fulfilled" ? (
+                aniAlarm.alarms.filter((y) => {
+                  return y.aniNumber === "" + x.i;
+                }).length > 0 ? (
+                  <RenderNotifi
+                    isOn={true}
+                    ani={{
+                      aniNumber: "" + x.i,
+                      aniTitle: x.s,
+                      aniTime: x.t,
+                    }}
+                  />
+                ) : (
+                  <RenderNotifi
+                    isOn={false}
+                    ani={{
+                      aniNumber: "" + x.i,
+                      aniTitle: x.s,
+                      aniTime: x.t,
+                    }}
+                  />
+                )
+              ) : (
+                <div>로딩중...</div>
               )}
               <a href={x.l} target="_blank" rel="noopener noreferrer">
                 <Tooltip title="공식 웹 사이트 가기" aria-label="goOfficial">

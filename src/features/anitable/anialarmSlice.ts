@@ -1,9 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import localforage from "localforage";
 
+export interface AniAlarmElemState {
+  aniNumber: string;
+  aniTitle: string;
+  aniTime: string;
+}
+
 export interface AniAlarmState {
   loaded: "initial" | "pending" | "fulfilled" | "rejected";
-  alarms: string[];
+  alarms: AniAlarmElemState[];
 }
 
 const initialState: AniAlarmState = {
@@ -12,14 +18,16 @@ const initialState: AniAlarmState = {
 };
 
 const fetchAniAlarm = createAsyncThunk("anitable/fetchAniAlarm", async () => {
-  const response: string[] | null = await localforage.getItem("ani-alarm");
+  const response: AniAlarmElemState[] | null = await localforage.getItem(
+    "ani-alarm"
+  );
   if (response === null) return [];
   return response;
 });
 
 const setAniAlarm = createAsyncThunk(
   "anitable/setAniAlarm",
-  async (aniAlarms: string[]) => {
+  async (aniAlarms: AniAlarmElemState[]) => {
     const response = await localforage.setItem("ani-alarm", aniAlarms);
     return response;
   }

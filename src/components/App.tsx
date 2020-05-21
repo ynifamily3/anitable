@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import Anitable from "./Anitable/Anitable";
+import { useDispatch } from "react-redux";
+import { setNotify } from "../features/ui/uiSlice";
+
 import {
   Container,
   useTheme,
@@ -35,10 +38,26 @@ function App() {
   const youbis = ["일", "월", "화", "수", "목", "금", "토", "기타"];
   const today = new Date().getDay();
   const [youbi, setYoubi] = useState(today);
-
+  const dispatch = useDispatch();
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setYoubi(newValue);
   };
+
+  useEffect(() => {
+    const isNotificationSupported = "Notification" in window;
+    if (isNotificationSupported) {
+      Notification.requestPermission().then(function (result) {
+        if (result === "granted") {
+          console.log("[Notification] 허용: ", result);
+          dispatch(setNotify(result));
+        } else {
+          console.log("[Notification] 차단: ", result);
+          dispatch(setNotify(result));
+        }
+      });
+    }
+  }, []);
+
   return (
     <Container maxWidth="md" className={classes.cont}>
       <div className={classes.root}>
