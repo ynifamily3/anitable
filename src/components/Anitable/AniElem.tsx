@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   Card,
-  CardMedia,
   CardContent,
   IconButton,
   CircularProgress,
@@ -14,7 +13,9 @@ import { AniTimetableElem } from "../../api/anitableApi";
 import Tooltip from "@material-ui/core/Tooltip";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
-import Fade from "@material-ui/core/Fade";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/rootReducer";
+import { setAniAlarm } from "../../features/anitable/anialarmSlice";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -70,11 +71,19 @@ interface Props {
 export default function AniElem({ x, isComplete }: Props) {
   const classes = useStyles();
   const [imgLoaded, setImgLoaded] = useState(false);
+  const dispatch = useDispatch();
+  const aniAlarm = useSelector((state: RootState) => state.anialarm);
+
   const handleImageLoad = (
     event: React.SyntheticEvent<HTMLImageElement, Event>
   ) => {
-    // alert("Load!");
     setImgLoaded(true);
+  };
+  const handleAlarmClick = (payload: string) => (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    console.log(payload);
+    dispatch(setAniAlarm([...aniAlarm.alarms, payload]));
   };
   return (
     <Box m="1rem" className={classes.box}>
@@ -85,6 +94,7 @@ export default function AniElem({ x, isComplete }: Props) {
         {x.img && (
           <div className={classes.imgWrapper}>
             <img
+              alt={x.t}
               src={x.img}
               className={classes.cover}
               onLoad={handleImageLoad}
@@ -101,15 +111,18 @@ export default function AniElem({ x, isComplete }: Props) {
               </Typography>
             </div>
             <div className={classes.right}>
-              {!isComplete && (
+              {!isComplete && aniAlarm.loaded === "fulfilled" && (
                 <Tooltip title="푸쉬 알림 받기" aria-label="pushNotification">
-                  <IconButton aria-label="turn on Notification">
-                    {/* <NotificationsIcon /> */}
-                    <NotificationsActiveIcon />
+                  <IconButton
+                    aria-label="turn on Notification"
+                    onClick={handleAlarmClick(x.i + "")}
+                  >
+                    <NotificationsIcon />
+                    {/* <NotificationsActiveIcon /> */}
                   </IconButton>
                 </Tooltip>
               )}
-              <a href={x.l} target="_blank" rel="noreferrer">
+              <a href={x.l} target="_blank" rel="noopener noreferrer">
                 <Tooltip title="공식 웹 사이트 가기" aria-label="goOfficial">
                   <IconButton aria-label="open website">
                     <OpenInNewIcon />

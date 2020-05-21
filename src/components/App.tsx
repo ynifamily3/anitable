@@ -66,7 +66,7 @@ function App() {
               {youbis.map((label, i) => {
                 return (
                   <Tab
-                    label={label + (i == today ? "(오늘)" : "")}
+                    label={label + (i === today ? "(오늘)" : "")}
                     key={label}
                   />
                 );

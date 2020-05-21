@@ -17,6 +17,7 @@
     "@types/workbox-build": "^5.0.0",
     "@types/workbox-routing": "^4.3.0",
     "axios": "^0.19.2",
+    "localforage": "^1.7.3",
     "react": "^16.13.1",
     "react-app-rewire-workbox": "^2.0.1",
     "react-app-rewired": "^2.1.6",

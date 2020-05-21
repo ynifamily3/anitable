@@ -15,6 +15,22 @@ precacheAndRoute(self.__WB_MANIFEST);
 skipWaiting();
 clientsClaim();
 
+async function doSomeStuff() {
+  return new Promise(async (resolve, reject) => {
+    console.log("두 썸 스텁");
+    resolve({
+      emoji: "=ㅅ=",
+    });
+  });
+}
+
+// 싱크
+self.addEventListener("sync", function (event) {
+  if (event.tag === "myFirstSync") {
+    event.waitUntil(doSomeStuff());
+  }
+});
+
 // app-shell
 registerRoute("/", new StaleWhileRevalidate());
 registerRoute("/manifest.json", new StaleWhileRevalidate());
@@ -40,3 +56,5 @@ registerRoute(
 
 // api 캐시
 registerRoute("https://api.miel.dev/timetable/list/now", new NetworkFirst());
+
+// 10분마다 서비스 워커가 로컬포리지를 읽어서
