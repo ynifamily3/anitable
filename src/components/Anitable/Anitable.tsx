@@ -27,8 +27,13 @@ function Anitable(props: Props) {
 
   useEffect(() => {
     dispatch(fetchAnitable());
-    dispatch(fetchAniAlarm());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (ani.loaded === "fulfilled") {
+      dispatch(fetchAniAlarm());
+    }
+  }, [dispatch, ani.loaded]);
   return (
     <React.Fragment>
       {ani.loaded === "pending" && (
@@ -48,7 +53,14 @@ function Anitable(props: Props) {
       )}
       {ani.loaded === "fulfilled" &&
         ani.animations[youbi].map((x, order) => {
-          return <AniElem x={x} key={x.i} isComplete={youbi === 7} />;
+          return (
+            <AniElem
+              x={x}
+              key={x.i}
+              isComplete={youbi === 7}
+              alarm={!!x.alarm}
+            />
+          );
         })}
     </React.Fragment>
   );

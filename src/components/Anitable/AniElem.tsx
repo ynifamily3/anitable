@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   x: AniTimetableElem;
   isComplete?: boolean; // 완결난 애니 (기타 탭) 인 경우 true
+  alarm: boolean;
 }
 
 interface Props2 {
@@ -76,12 +77,28 @@ interface Props2 {
   isOn: boolean;
 }
 
-export default function AniElem({ x, isComplete }: Props) {
+export default function AniElem({ x, isComplete, alarm }: Props) {
   const classes = useStyles();
   const [imgLoaded, setImgLoaded] = useState(false);
   const dispatch = useDispatch();
   const aniAlarm = useSelector((state: RootState) => state.anialarm);
   const notify = useSelector((state: RootState) => state.ui);
+  const [mutAlarm, setMutAlarm] = useState(alarm);
+
+  useEffect(() => {
+    setMutAlarm(alarm);
+  }, [alarm]);
+
+  useEffect(() => {
+    if (aniAlarm.loaded === "fulfilled") {
+      setMutAlarm(false);
+      for (let i = 0; i < aniAlarm.alarms.length; i++) {
+        if (aniAlarm.alarms[i].aniNumber === "" + x.i) {
+          setMutAlarm(true);
+        }
+      }
+    }
+  }, [aniAlarm]);
 
   const RenderNotifi = (props: Props2) => {
     return props.isOn ? (
@@ -157,30 +174,15 @@ export default function AniElem({ x, isComplete }: Props) {
               </Typography>
             </div>
             <div className={classes.right}>
-              {!isComplete && aniAlarm.loaded === "fulfilled" ? (
-                aniAlarm.alarms.filter((y) => {
-                  return y.aniNumber === "" + x.i;
-                }).length > 0 ? (
-                  <RenderNotifi
-                    isOn={true}
-                    ani={{
-                      aniNumber: "" + x.i,
-                      aniTitle: x.s,
-                      aniTime: x.t,
-                    }}
-                  />
-                ) : (
-                  <RenderNotifi
-                    isOn={false}
-                    ani={{
-                      aniNumber: "" + x.i,
-                      aniTitle: x.s,
-                      aniTime: x.t,
-                    }}
-                  />
-                )
-              ) : (
-                <div>로딩중...</div>
+              {!isComplete && (
+                <RenderNotifi
+                  isOn={mutAlarm}
+                  ani={{
+                    aniNumber: "" + x.i,
+                    aniTitle: x.s,
+                    aniTime: x.t,
+                  }}
+                />
               )}
               <a href={x.l} target="_blank" rel="noopener noreferrer">
                 <Tooltip title="공식 웹 사이트 가기" aria-label="goOfficial">

@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import localforage from "localforage";
+import { RootState } from "../../app/rootReducer";
+import { setAlarm } from "./anitableSlice";
 
 export interface AniAlarmElemState {
   aniNumber: string;
@@ -17,13 +19,18 @@ const initialState: AniAlarmState = {
   alarms: [],
 };
 
-const fetchAniAlarm = createAsyncThunk("anitable/fetchAniAlarm", async () => {
-  const response: AniAlarmElemState[] | null = await localforage.getItem(
-    "ani-alarm"
-  );
-  if (response === null) return [];
-  return response;
-});
+const fetchAniAlarm = createAsyncThunk(
+  "anitable/fetchAniAlarm",
+  async (dummy, thunkAPI) => {
+    const response: AniAlarmElemState[] | null = await localforage.getItem(
+      "ani-alarm"
+    );
+    if (response === null) return [];
+    const { anitable } = thunkAPI.getState() as RootState;
+    thunkAPI.dispatch(setAlarm(response));
+    return response;
+  }
+);
 
 const setAniAlarm = createAsyncThunk(
   "anitable/setAniAlarm",

@@ -15,6 +15,7 @@ export interface AniTimetableElem {
   b: number;
   s: string;
   e: number;
+  alarm?: boolean;
 }
 
 export interface AniTimetableError {
