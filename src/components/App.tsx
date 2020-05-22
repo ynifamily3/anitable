@@ -45,16 +45,23 @@ function App() {
 
   useEffect(() => {
     const isNotificationSupported = "Notification" in window;
+    function gr(result: "default" | "granted" | "denied") {
+      if (result === "granted") {
+        console.log("[Notification] 허용: ", result);
+        dispatch(setNotify(result));
+      } else {
+        console.log("[Notification] 차단: ", result);
+        dispatch(setNotify(result));
+      }
+    }
     if (isNotificationSupported) {
-      Notification.requestPermission().then(function (result) {
-        if (result === "granted") {
-          console.log("[Notification] 허용: ", result);
-          dispatch(setNotify(result));
-        } else {
-          console.log("[Notification] 차단: ", result);
-          dispatch(setNotify(result));
+      try {
+        Notification.requestPermission().then(gr);
+      } catch (error) {
+        if (error instanceof TypeError) {
+          Notification.requestPermission(gr);
         }
-      });
+      }
     }
   }, []);
 
