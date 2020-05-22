@@ -20,26 +20,38 @@ async function aniAlarm() {
   console.log("aniAlarm 스타트.");
   return new Promise(async (resolve, reject) => {
     setInterval(async () => {
-      self.registration.showNotification("애니 알림!" + Math.random());
-    }, 10000);
+      try {
+        const aniAlarm = await localforage.getItem("ani-alarm");
+        const today = new Date();
+        const day = today.getDay();
+        const combinedTime = Number(
+          "" + today.getHours() + "" + today.getMinutes()
+        );
+        Array.isArray(aniAlarm) &&
+          aniAlarm.map((x) => {
+            const { aniDay, aniNumber, aniTitle, aniTime } = x;
+            if (
+              aniDay === day &&
+              Math.abs(combinedTime - Number(aniTime)) < 20
+            ) {
+              self.registration.showNotification("Anime Reminder", {
+                body:
+                  "[" +
+                  aniNumber +
+                  "] " +
+                  aniTitle +
+                  "의 방영시간이 " +
+                  aniTime +
+                  "입니다!",
+                vibrate: [200, 100, 200, 100, 200, 100, 200],
+              });
+            }
+          });
+      } catch (e) {
+        console.error(e);
+      }
+    }, 1000 * 60 * 10); // 10분마다 점검하기
   });
-  // return new Promise(async (resolve, reject) => {
-  //   setInterval(async () => {
-  //     console.log("인터벌 작업..");
-  //     try {
-  //       const test = await localforage.getItem("testment");
-  //       if (test === null) {
-  //         await localforage.setItem("testment", []);
-  //       } else {
-  //         await localforage.setItem("testment", [...test, Math.random()]);
-  //         console.log(test);
-  //       }
-  //     } catch (e) {
-  //       console.error(e);
-  //     }
-  //     self.registration.showNotification("안농" + Math.random());
-  //   }, 1000 * 60 * 10); // 10분마다 검사
-  // });
 }
 
 // 싱크

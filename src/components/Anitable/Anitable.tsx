@@ -55,6 +55,7 @@ function Anitable(props: Props) {
         ani.animations[youbi].map((x, order) => {
           return (
             <AniElem
+              youbi={youbi}
               x={x}
               key={x.i}
               isComplete={youbi === 7}

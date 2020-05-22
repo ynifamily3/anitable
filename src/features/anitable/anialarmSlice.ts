@@ -6,6 +6,7 @@ import { setAlarm } from "./anitableSlice";
 export interface AniAlarmElemState {
   aniNumber: string;
   aniTitle: string;
+  aniDay: number;
   aniTime: string;
 }
 

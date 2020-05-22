@@ -70,6 +70,7 @@ interface Props {
   x: AniTimetableElem;
   isComplete?: boolean; // 완결난 애니 (기타 탭) 인 경우 true
   alarm: boolean;
+  youbi: number;
 }
 
 interface Props2 {
@@ -77,7 +78,7 @@ interface Props2 {
   isOn: boolean;
 }
 
-export default function AniElem({ x, isComplete, alarm }: Props) {
+export default function AniElem({ x, isComplete, alarm, youbi }: Props) {
   const classes = useStyles();
   const [imgLoaded, setImgLoaded] = useState(false);
   const dispatch = useDispatch();
@@ -178,6 +179,7 @@ export default function AniElem({ x, isComplete, alarm }: Props) {
                 <RenderNotifi
                   isOn={mutAlarm}
                   ani={{
+                    aniDay: youbi,
                     aniNumber: "" + x.i,
                     aniTitle: x.s,
                     aniTime: x.t,
